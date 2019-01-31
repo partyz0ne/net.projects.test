@@ -1,8 +1,9 @@
 ﻿namespace Persons.Domain.Commands
 {
+    using Nancy;
     using Persons.Abstractions;
 
-    public class CreatePersonCommand : ICommand<Nancy.Response>
+    public class CreatePersonCommand : ICommand<HttpStatusCode>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CreatePersonCommand" /> class.

@@ -1,5 +1,6 @@
 ﻿namespace Persons
 {
+    using System;
     using Nancy;
     using Nancy.ModelBinding;
     using Persons.Abstractions;
@@ -20,7 +21,8 @@
 
             Post["/persons"] = parameters =>
             {
-                var person = this.Bind<PersonDTO>();
+                var person = this.Bind<Person>();
+                person.Guid = new Guid();
 
                 var command = new CreatePersonCommand(person);
                 var handler = PersonCommandHandlerFactory.Build(_repo, command);

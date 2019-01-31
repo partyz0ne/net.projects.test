@@ -20,7 +20,7 @@
         /// <summary>
         /// Gets an unique ID.
         /// </summary>
-        public Guid Guid { get; }
+        public Guid Guid { get; set; }
 
         /// <inheritdoc cref="IPerson.Name" />
         public string Name { get; set; }

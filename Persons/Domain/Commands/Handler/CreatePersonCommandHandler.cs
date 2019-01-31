@@ -1,8 +1,11 @@
 ﻿namespace Persons.Domain.Commands
 {
+    using System;
+    using Nancy;
     using Persons.Abstractions;
+    using Serilog;
 
-    public class CreatePersonCommandHandler : ICommandHandler<CreatePersonCommand, Nancy.Response>
+    public class CreatePersonCommandHandler : ICommandHandler<CreatePersonCommand, HttpStatusCode>
     {
         private readonly IPersonRepository _repo;
         private readonly CreatePersonCommand _command;
@@ -16,13 +19,23 @@
         {
             _repo = repo;
             _command = command;
+
+            Log.Information("Received CreatePerson command.");
         }
 
-        public Nancy.Response Execute()
+        public HttpStatusCode Execute()
         {
-            _repo.Insert(_command.Person);
+            HttpStatusCode response;
 
-            var response = Nancy.Responses.HtmlResponse.NoBody;
+            try
+            {
+                _repo.Insert(_command.Person);
+                response = HttpStatusCode.Created;
+            }
+            catch (Exception)
+            {
+                response = HttpStatusCode.BadRequest;
+            }
 
             return response;
         }

@@ -20,11 +20,24 @@
 
             Get["/persons/{person_id}"] = parameters =>
             {
-                var query = new GetPersonQuery(new Guid(parameters["person_id"]));
-                var handler = PersonQueryHandlerFactory.Build(_repo, query);
-                var person = handler.Get();
+                try
+                {
+                    var query = new GetPersonQuery(new Guid(parameters["person_id"]));
+                    var handler = PersonQueryHandlerFactory.Build(_repo, query);
+                    var person = handler.Get();
+                    if (person == null)
+                    {
+                        return HttpStatusCode.NotFound;
+                    }
 
-                return Response.AsJson(person);
+                    return Response.AsJson(person);
+                }
+                catch
+                {
+
+                }
+
+                return HttpStatusCode.NotFound;
             };
         }
     }
