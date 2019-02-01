@@ -4,6 +4,7 @@
     using Nancy;
     using Persons.Abstractions;
     using Persons.Domain.Queries;
+    using Serilog;
 
     public class GetPersonModule : NancyModule
     {
@@ -12,7 +13,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="GetPersonModule" /> class.
         /// </summary>
-        /// <param name="repo"></param>
+        /// <param name="repo">Database repository</param>
         public GetPersonModule(IPersonRepository repo) 
             : base("/api/v1")
         {
@@ -32,9 +33,9 @@
 
                     return Response.AsJson(person);
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    Log.Error(ex, "Error of {0} execution.", nameof(GetPersonModule));
                 }
 
                 return HttpStatusCode.NotFound;

@@ -7,20 +7,27 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Person" /> class.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="birthDate"></param>
+        /// <param name="name">Person's name.</param>
+        /// <param name="birthDate">Person's birth date.</param>
         public Person(string name, DateTime birthDate)
+            : this()
         {
-            Guid = new Guid();
-
             Name = name;
             BirthDate = birthDate;
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Person" /> class.
+        /// </summary>
+        protected Person()
+        {
+            Guid = Guid.NewGuid();
+        }
+
+        /// <summary>
         /// Gets an unique ID.
         /// </summary>
-        public Guid Guid { get; set; }
+        public Guid Guid { get; }
 
         /// <inheritdoc cref="IPerson.Name" />
         public string Name { get; set; }

@@ -8,7 +8,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="GetPersonQuery" /> class.
         /// </summary>
-        /// <param name="guid"></param>
+        /// <param name="guid">Person's ID.</param>
         public GetPersonQuery(Guid guid)
         {
             Guid = guid;

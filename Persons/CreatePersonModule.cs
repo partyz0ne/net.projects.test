@@ -13,7 +13,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="CreatePersonModule" /> class.
         /// </summary>
-        /// <param name="repo"></param>
+        /// <param name="repo">Database repository</param>
         public CreatePersonModule(IPersonRepository repo) 
             : base("/api/v1")
         {
@@ -22,11 +22,20 @@
             Post["/persons"] = parameters =>
             {
                 var person = this.Bind<Person>();
-                person.Guid = new Guid();
+                if (person == null || string.IsNullOrEmpty(person.Name) || person.BirthDate == DateTime.MinValue)
+                {
+                    return HttpStatusCode.BadRequest;
+                }
 
                 var command = new CreatePersonCommand(person);
                 var handler = PersonCommandHandlerFactory.Build(_repo, command);
-                return handler.Execute();
+                var statusCode = handler.Execute();
+                if (statusCode == HttpStatusCode.Created)
+                {
+                    return new Response().WithHeader("Location", $"{ModulePath}/persons/{person.Guid}").WithStatusCode(HttpStatusCode.Created);
+                }
+
+                return statusCode;
             };
         }
     }

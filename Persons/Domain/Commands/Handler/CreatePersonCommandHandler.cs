@@ -13,8 +13,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="CreatePersonCommandHandler" /> class.
         /// </summary>
-        /// <param name="repo"></param>
-        /// <param name="command"></param>
+        /// <param name="repo">Database repository</param>
+        /// <param name="command">Command instance.</param>
         public CreatePersonCommandHandler(IPersonRepository repo, CreatePersonCommand command)
         {
             _repo = repo;
@@ -23,6 +23,7 @@
             Log.Information("Received CreatePerson command.");
         }
 
+        /// <inheritdoc cref="ICommandHandler.Execute"/>
         public HttpStatusCode Execute()
         {
             HttpStatusCode response;

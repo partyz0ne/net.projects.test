@@ -8,7 +8,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="CreatePersonCommand" /> class.
         /// </summary>
-        /// <param name="person"></param>
+        /// <param name="person">Initialized person instance.</param>
         public CreatePersonCommand(IPerson person)
         {
             Person = person;

@@ -8,6 +8,9 @@
 
     public class PersonRepository : IPersonRepository
     {
+        /// <summary>
+        /// Database file name.
+        /// </summary>
         private const string DbFileName = "persons.db";
 
         /// <summary>
@@ -33,8 +36,12 @@
             }
         }
 
+        /// <summary>
+        /// Full path to database file.
+        /// </summary>
         private static string DbPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DbFileName);
 
+        /// <inheritdoc cref="IPersonRepository.Find"/>
         public IPerson Find(Guid id)
         {
             PersonDTO res = null;
@@ -42,8 +49,8 @@
             {
                 using (var conn = CreateDbConnection())
                 {
-                    const string sql = "SELECT Name, BirthDate FROM persons WHERE Guid = @Guid";
-                    res = conn.QuerySingleOrDefault<PersonDTO>(sql, new { Guid = id.ToString() });
+                    const string Sql = "SELECT Name, BirthDate FROM persons WHERE Guid = @Guid";
+                    res = conn.QuerySingleOrDefault<PersonDTO>(Sql, new { Guid = id.ToString() });
                 }
             }
             catch (Exception ex)
@@ -54,6 +61,7 @@
             return res;
         }
 
+        /// <inheritdoc cref="IPersonRepository.Insert"/>
         public void Insert(IPerson item)
         {
             try
@@ -62,8 +70,8 @@
                 {
                     if (item is Person person)
                     {
-                        const string sql = "INSERT INTO persons(Guid, Name, BirthDate) VALUES(@Guid, @Name, @BirthDate)";
-                        conn.Execute(sql, new {Guid = person.Guid.ToString(), Name = person.Name, BirthDate = person.BirthDate});
+                        const string Sql = "INSERT INTO persons(Guid, Name, BirthDate) VALUES(@Guid, @Name, @BirthDate)";
+                        conn.Execute(Sql, new { Guid = person.Guid.ToString(), Name = person.Name, BirthDate = person.BirthDate });
                     }
                 }
             }
@@ -77,7 +85,8 @@
         /// <summary>
         /// Gets a connection to InMemory DB.
         /// </summary>
-        private SQLiteConnection CreateDbConnection()
+        /// <returns>Opened database connection.</returns>
+        private static SQLiteConnection CreateDbConnection()
         {
             var connection = new SQLiteConnection($"Data Source={DbPath}");
             connection.Open();
