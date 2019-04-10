@@ -53,11 +53,13 @@
     <Compile Include="Domain\Commands\ICommandHandler.cs" />
     <Compile Include="Domain\Commands\PersonCommandHandlerFactory.cs" />
     <Compile Include="Domain\Queries\Handler\GetPersonQueryHandler.cs" />
+    <Compile Include="Domain\Queries\Handler\GetPersonsQueryHandler.cs" />
     <Compile Include="Domain\Queries\PersonQueryHandlerFactory.cs" />
     <Compile Include="Domain\Queries\Query\GetPersonQuery.cs" />
     <Compile Include="CreatePersonModule.cs" />
     <Compile Include="Domain\Queries\IQuery.cs" />
     <Compile Include="Domain\Queries\IQueryHandler.cs" />
+    <Compile Include="Domain\Queries\Query\GetPersonsQuery.cs" />
     <Compile Include="GetPersonModule.cs" />
     <Compile Include="NancySelfHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

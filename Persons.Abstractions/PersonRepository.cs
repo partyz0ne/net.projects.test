@@ -1,8 +1,10 @@
 ﻿namespace Persons.Abstractions
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.SQLite;
     using System.IO;
+    using System.Linq;
     using Dapper;
     using Serilog;
 
@@ -80,6 +82,26 @@
                 Log.Error(ex, "Insert item error.");
                 throw;
             }
+        }
+
+        /// <inheritdoc cref="IPersonRepository.Select" />
+        public IList<IPerson> Select()
+        {
+            var res = new List<IPerson>();
+            try
+            {
+                using (var conn = CreateDbConnection())
+                {
+                    const string Sql = "SELECT Name, BirthDate FROM persons";
+                    res = conn.Query<PersonDTO>(Sql).Cast<IPerson>().ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Select items error.");
+            }
+
+            return res;
         }
 
         /// <summary>

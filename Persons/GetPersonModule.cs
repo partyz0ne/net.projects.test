@@ -1,6 +1,7 @@
 ﻿namespace Persons
 {
     using System;
+    using System.Linq;
     using Nancy;
     using Persons.Abstractions;
     using Persons.Domain.Queries;
@@ -18,6 +19,28 @@
             : base("/api/v1")
         {
             _repo = repo;
+
+            Get["/persons"] = parameters =>
+            {
+                try
+                {
+                    var query = new GetPersonsQuery();
+                    var handler = PersonQueryHandlerFactory.Build(_repo, query);
+                    var persons = handler.Get();
+                    if (persons == null || !persons.Any())
+                    {
+                        return HttpStatusCode.NotFound;
+                    }
+
+                    return Response.AsJson(persons);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Error of {0} execution.", nameof(GetPersonModule));
+                }
+
+                return HttpStatusCode.NotFound;
+            };
 
             Get["/persons/{person_id}"] = parameters =>
             {
